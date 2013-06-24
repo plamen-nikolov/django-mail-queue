@@ -66,12 +66,12 @@ class MailerMessage(models.Model):
     objects = MailerMessageManager()
 
 
-    def save(self, send=True, *args, **kwargs):
+    def save(self, do_not_send=False, *args, **kwargs):
         """
         Saves the MailerMessage instance without sending the e-mail. This ensures
         other models (e.g. `Attachment`) have something to relate to in the database.
         """
-        self.do_not_send = send
+        self.do_not_send = do_not_send
         super(MailerMessage, self).save(*args, **kwargs)
 
 
@@ -85,7 +85,7 @@ class MailerMessage(models.Model):
         Takes a Django `File` object and creates an attachment for this mailer message.
         """
         if self.pk is None:
-            self.save(send=False)
+            self.save(do_not_send=True)
 
         Attachment.objects.create(email=self, file_attachment=attachment)
 
