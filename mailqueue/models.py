@@ -132,7 +132,7 @@ class MailerMessage(models.Model):
                 if raise_on_error:
                     raise e
 
-            self.save()
+            self.save(do_not_send=True)
 
 
 class Attachment(models.Model):
